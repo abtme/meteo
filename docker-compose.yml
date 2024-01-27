@@ -1,0 +1,25 @@
+version: '3'
+services:
+  snmp-collector:
+    build: ./snmp-collector
+    volumes:
+      - ./database/db:/app/db
+    environment:
+      - SNMP_OID_DIRECTION=iso.3.6.1.4.1.18248.31.1.2.1.1.3.7
+      - SNMP_OID_SPEED=iso.3.6.1.4.1.18248.31.1.2.1.1.3.8
+      - SNMP_COMMUNITY=public
+      - SNMP_TARGET=10.68.30.201:161
+    depends_on:
+      - database
+    networks:
+      - my-network
+
+  database:
+    build: ./database
+    volumes:
+      - ./database/db:/app/db
+    networks:
+      - my-network
+
+networks:
+  my-network:
